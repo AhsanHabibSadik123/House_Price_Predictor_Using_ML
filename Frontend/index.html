@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bangalore Home Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2 {
+            color: #1f2937;
+        }
+
+        form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #d1fae5;
+            border-left: 5px solid #10b981;
+            color: #065f46;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter Property Details</h2>
+    <form action="/predict" method="POST">
+        <label>Location:</label>
+        <select name="location" required>
+            {% for loc in locations %}
+                <option value="{{ loc }}" {% if loc == input_location %}selected{% endif %}>{{ loc }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Total Square Feet:</label>
+        <input type="number" name="sqft" required value="{{ input_sqft if input_sqft is defined }}">
+
+        <label>Bath:</label>
+        <input type="number" name="bath" required value="{{ input_bath if input_bath is defined }}">
+
+        <label>BHK:</label>
+        <input type="number" name="bhk" required value="{{ input_bhk if input_bhk is defined }}">
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <div class="result">
+            <h3>{{ prediction_text }}</h3>
+            <p><strong>Location:</strong> {{ input_location }}</p>
+            <p><strong>Square Feet:</strong> {{ input_sqft }}</p>
+            <p><strong>Bath:</strong> {{ input_bath }}</p>
+            <p><strong>BHK:</strong> {{ input_bhk }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
